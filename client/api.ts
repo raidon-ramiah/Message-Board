@@ -6,7 +6,7 @@ const rootUrl = '/api/v1'
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export async function getFruits(): Promise<Fruit[]> {
-  await sleep(1500)
+  // await sleep(1500)
 
   return request
     .get(`${rootUrl}/fruits`)
@@ -22,7 +22,7 @@ export async function addFruit({
   fruit,
   token,
 }: AddFruitFunction): Promise<Fruit> {
-  await sleep(1500)
+  // await sleep(1500)
 
   return request
     .post(`${rootUrl}/fruits`)
@@ -40,7 +40,7 @@ export async function updateFruit({
   fruit,
   token,
 }: UpdateFruitFunction): Promise<Fruit> {
-  await sleep(1500)
+  // await sleep(1500)
 
   return request
     .put(`${rootUrl}/fruits/${fruit.id}`)
@@ -58,7 +58,7 @@ export async function deleteFruit({
   id,
   token,
 }: DeleteFruitFunction): Promise<void> {
-  await sleep(1500)
+  // await sleep(1500)
 
   return request
     .delete(`${rootUrl}/fruits/${id}`)
