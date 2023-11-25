@@ -1,67 +1,67 @@
 import request from 'superagent'
-import { Fruit, FruitData } from '../models/fruit.ts'
+import { Message, MessageData } from '../models/message.ts'
 
 const rootUrl = '/api/v1'
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+// const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-export async function getFruits(): Promise<Fruit[]> {
+export async function getMessages(): Promise<Message[]> {
   // await sleep(1500)
 
   return request
-    .get(`${rootUrl}/fruits`)
-    .then((res) => res.body.fruits)
+    .get(`${rootUrl}/messages`)
+    .then((res) => res.body.messages)
     .catch(logError)
 }
 
-interface AddFruitFunction {
-  fruit: FruitData
+interface AddMessageFunction {
+  message: MessageData
   token: string
 }
-export async function addFruit({
-  fruit,
+export async function addMessage({
+  message,
   token,
-}: AddFruitFunction): Promise<Fruit> {
+}: AddMessageFunction): Promise<Message> {
   // await sleep(1500)
 
   return request
-    .post(`${rootUrl}/fruits`)
+    .post(`${rootUrl}/messages`)
     .set('Authorization', `Bearer ${token}`)
-    .send({ fruit })
-    .then((res) => res.body.fruit)
+    .send({ message })
+    .then((res) => res.body.message)
     .catch(logError)
 }
 
-interface UpdateFruitFunction {
-  fruit: Fruit
+interface UpdateMessageFunction {
+  message: Message
   token: string
 }
-export async function updateFruit({
-  fruit,
+export async function updateMessage({
+  message,
   token,
-}: UpdateFruitFunction): Promise<Fruit> {
+}: UpdateMessageFunction): Promise<Message> {
   // await sleep(1500)
 
   return request
-    .put(`${rootUrl}/fruits/${fruit.id}`)
+    .put(`${rootUrl}/messages/${message.id}`)
     .set('Authorization', `Bearer ${token}`)
-    .send({ fruit })
-    .then((res) => res.body.fruit)
+    .send({ message })
+    .then((res) => res.body.message)
     .catch(logError)
 }
 
-interface DeleteFruitFunction {
+interface DeleteMessageFunction {
   id: number
   token: string
 }
-export async function deleteFruit({
+export async function deleteMessage({
   id,
   token,
-}: DeleteFruitFunction): Promise<void> {
+}: DeleteMessageFunction): Promise<void> {
   // await sleep(1500)
 
   return request
-    .delete(`${rootUrl}/fruits/${id}`)
+    .delete(`${rootUrl}/messages/${id}`)
     .set('Authorization', `Bearer ${token}`)
     .then((res) => res.body)
     .catch(logError)

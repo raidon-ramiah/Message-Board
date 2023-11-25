@@ -1,61 +1,61 @@
-import { FruitData } from '../../models/fruit.ts'
+import { MessageData } from '../../models/message.ts'
 
 import { useState } from 'react'
 
 import { GridForm, ColOne, ColTwoText, Button } from './Styled.tsx'
 
 interface Props {
-  onAdd: (fruit: FruitData) => void
+  onAdd: (message: MessageData) => void
   onClose: () => void
 }
 
-const emptyFruit: FruitData = {
-  name: '',
-  averageGramsEach: 0,
+const emptyMessage: MessageData = {
+  message: '',
+  love: 0,
 }
 
 function AddFruitForm({ onAdd, onClose }: Props) {
-  const [newFruit, setNewFruit] = useState(emptyFruit)
+  const [newMessage, setNewMessage] = useState(emptyMessage)
 
-  const { name: addingName, averageGramsEach: addingGrams } = newFruit
+  const { message, love } = newMessage
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setNewFruit({
-      ...newFruit,
+    setNewMessage((prevMessage) => ({
+      ...prevMessage,
       [name]: value,
-    })
+    }))
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    onAdd(newFruit)
+    console.log(newMessage)
+    onAdd(newMessage)
   }
 
   return (
     <>
       <h2>Add new</h2>
       <GridForm onSubmit={handleSubmit}>
-        <ColOne htmlFor="name">Name:</ColOne>
+        <ColOne htmlFor="message">Message:</ColOne>
         <ColTwoText
           type="text"
-          name="name"
-          id="name"
-          value={addingName}
+          name="message"
+          id="message"
+          value={message}
           onChange={handleChange}
         />
 
-        <ColOne htmlFor="averageGramsEach">Average Grams Each:</ColOne>
+        <ColOne htmlFor="love">Love:</ColOne>
         <ColTwoText
           type="number"
-          name="averageGramsEach"
-          id="averageGramsEach"
-          value={addingGrams}
+          name="love"
+          id="love"
+          value={love}
           onChange={handleChange}
         />
 
-        <Button type="submit" disabled={addingName === '' || addingGrams === 0}>
+        <Button type="submit" disabled={message === '' || love === 0}>
           Add fruit
         </Button>
         <Button type="button" onClick={onClose}>
