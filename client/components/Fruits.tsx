@@ -1,15 +1,15 @@
-import { Fruit, FruitData } from '../../models/fruit.ts'
+import { Message, MessageData } from '../../models/message.ts'
 
 import { useState } from 'react'
 import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
-import { useFruits } from '../hooks.ts'
+import { useMessage } from '../hooks.ts'
 import { useAuth0 } from '@auth0/auth0-react'
 
 type FormState =
   | {
-      selectedFruit: Fruit
+      selectedFruit: Message
       show: 'selected'
     }
   | {
@@ -17,14 +17,14 @@ type FormState =
       show: 'add' | 'none'
     }
 
-function Fruits() {
+function Messages() {
   const jwt = useAuth0().getAccessTokenSilently
   const [error, setError] = useState('')
   const [form, setForm] = useState<FormState>({
     selectedFruit: null,
     show: 'none',
   })
-  const fruits = useFruits()
+  const fruits = useMessage()
 
   const handleMutationSuccess = () => {
     handleCloseForm()
@@ -44,18 +44,18 @@ function Fruits() {
     onError: handleError,
   }
 
-  const handleAdd = async (fruit: FruitData) => {
+  const handleAdd = async (message: MessageData) => {
     // TODO: use getAccessTokenSilently to get an access token
     const access = await jwt()
     // TODO: pass access token to mutate function
-    fruits.add.mutate({ fruit, token: access }, mutationOptions)
+    fruits.add.mutate({ message, token: access }, mutationOptions)
   }
 
-  const handleUpdate = async (fruit: Fruit) => {
+  const handleUpdate = async (message: Message) => {
     // TODO: use getAccessTokenSilently to get an access token
     const access = await jwt()
     // TODO: pass access token to mutate function
-    fruits.update.mutate({ fruit, token: access }, mutationOptions)
+    fruits.update.mutate({ message, token: access }, mutationOptions)
   }
 
   const handleDeleteFruit = async (id: number) => {
@@ -77,7 +77,7 @@ function Fruits() {
     setForm({ show: 'none', selectedFruit: null })
   }
 
-  const handleSelectFruit = (fruit: Fruit) => {
+  const handleSelectFruit = (fruit: Message) => {
     setForm({ show: 'selected', selectedFruit: fruit })
   }
 
@@ -113,7 +113,7 @@ function Fruits() {
           fruits.data.map((fruit) => (
             <li key={fruit.id}>
               <button onClick={() => handleSelectFruit(fruit)}>
-                {fruit.name}
+                {fruit.message}
               </button>
             </li>
           ))}
@@ -126,7 +126,7 @@ function Fruits() {
       {form.show === 'selected' && (
         <SelectedFruitForm
           key={form.selectedFruit.id}
-          fruit={form.selectedFruit}
+          message={form.selectedFruit}
           onUpdate={handleUpdate}
           onDelete={handleDeleteFruit}
           onClose={handleCloseForm}
@@ -136,4 +136,4 @@ function Fruits() {
   )
 }
 
-export default Fruits
+export default Messages

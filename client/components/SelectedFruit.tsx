@@ -1,4 +1,4 @@
-import { Fruit } from '../../models/fruit.ts'
+import { Message } from '../../models/message.ts'
 
 import { useState } from 'react'
 
@@ -6,23 +6,23 @@ import { GridForm, ColOne, ColTwoText, Button } from './Styled.tsx'
 import { useAuth0 } from '@auth0/auth0-react'
 
 interface Props {
-  fruit: Fruit
-  onUpdate: (updatedFruit: Fruit) => void
+  message: Message
+  onUpdate: (updatedMessage: Message) => void
   onDelete: (id: number) => void
   onClose: () => void
 }
 
-function SelectedFruitForm({ fruit, onUpdate, onDelete, onClose }: Props) {
-  const [updatedFruit, setUpdatedFruit] = useState(fruit)
+function SelectedFruitForm({ message, onUpdate, onDelete, onClose }: Props) {
+  const [updatedMessage, setUpdatedFruit] = useState(message)
 
-  const { name: editingName, averageGramsEach: editingGrams } = updatedFruit
-  const { name: currentName } = fruit
+  const { message: editingName, love: editingGrams } = updatedMessage
+  const { message: currentName } = message
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
     setUpdatedFruit({
-      ...updatedFruit,
+      ...updatedMessage,
       [name]: value,
     })
   }
@@ -30,15 +30,15 @@ function SelectedFruitForm({ fruit, onUpdate, onDelete, onClose }: Props) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    onUpdate(updatedFruit)
+    onUpdate(updatedMessage)
   }
 
   const handleDeleteButtonClick = () => {
-    onDelete(fruit.id)
+    onDelete(message.id)
   }
 
   function IsAuthorised() {
-    return useAuth0().user?.sub === fruit.addedByUser
+    return useAuth0().user?.sub === message.addedByUser
   }
 
   return (
