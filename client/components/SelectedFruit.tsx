@@ -21,10 +21,10 @@ function SelectedFruitForm({ message, onUpdate, onDelete, onClose }: Props) {
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
-    setUpdatedFruit({
-      ...updatedMessage,
+    setUpdatedFruit((prevMessage) => ({
+      ...prevMessage,
       [name]: value,
-    })
+    }))
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,20 +45,20 @@ function SelectedFruitForm({ message, onUpdate, onDelete, onClose }: Props) {
     <>
       <h2>Selected: {currentName}</h2>
       <GridForm onSubmit={handleSubmit}>
-        <ColOne htmlFor="name">Name:</ColOne>
+        <ColOne htmlFor="message">message:</ColOne>
         <ColTwoText
           type="text"
-          name="name"
-          id="name"
+          name="message"
+          id="message"
           value={editingName}
           onChange={handleTextChange}
         />
 
-        <ColOne htmlFor="averageGramsEach">Average Grams Each:</ColOne>
+        <ColOne htmlFor="love">Average Grams Each:</ColOne>
         <ColTwoText
           type="text"
-          name="averageGramsEach"
-          id="averageGramsEach"
+          name="love"
+          id="love"
           value={editingGrams}
           onChange={handleTextChange}
         />
