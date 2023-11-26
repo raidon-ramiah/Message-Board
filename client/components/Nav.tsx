@@ -32,7 +32,7 @@ function Nav() {
           <NavButton onClick={handleSignIn}>Sign in</NavButton>
         </IfNotAuthenticated>
       </NavGroup>
-      <h1>Fruit FTW!</h1>
+      <h1>Message Board</h1>
     </>
   )
 }

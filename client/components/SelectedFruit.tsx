@@ -54,7 +54,7 @@ function SelectedFruitForm({ message, onUpdate, onDelete, onClose }: Props) {
           onChange={handleTextChange}
         />
 
-        <ColOne htmlFor="love">Average Grams Each:</ColOne>
+        <ColOne htmlFor="love">Love:</ColOne>
         <ColTwoText
           type="text"
           name="love"

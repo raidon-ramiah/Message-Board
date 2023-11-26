@@ -98,7 +98,9 @@ function Messages() {
 
   if (fruits.error instanceof Error) {
     return (
-      <ErrorMessage>Failed to load fruits: {fruits.error.message}</ErrorMessage>
+      <ErrorMessage>
+        Failed to load messages: {fruits.error.message}
+      </ErrorMessage>
     )
   }
 
@@ -112,16 +114,15 @@ function Messages() {
         {fruits.status === 'success' &&
           fruits.data.map((fruit) => (
             <li key={fruit.id}>
-              <button onClick={() => handleSelectFruit(fruit)}>
-                {fruit.message}
-              </button>
+              {fruit.message}
+              <button onClick={() => handleSelectFruit(fruit)}>⚙️</button>
             </li>
           ))}
       </ul>
       {form.show === 'add' ? (
         <AddFruitForm onAdd={handleAdd} onClose={handleCloseForm} />
       ) : (
-        <button onClick={handleOpenAddForm}>Add a Fruit</button>
+        <button onClick={handleOpenAddForm}>Add a Message</button>
       )}
       {form.show === 'selected' && (
         <SelectedFruitForm
