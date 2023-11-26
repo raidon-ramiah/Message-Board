@@ -1,22 +1,42 @@
-import { useState } from 'react'
-import Fruits from './Fruits'
+import React, { useState } from 'react'
+import Fruits from './Messages'
 
 export function Board() {
-  const [displayBoard, setDisplayBoard] = useState([<Fruits />])
+  const [displayBoards, setDisplayBoards] = useState([
+    { id: 1, component: <Fruits /> },
+  ])
 
   function createBoard() {
-    setDisplayBoard((...prev) => [...prev, <Fruits />])
+    setDisplayBoards((prevBoards) => [
+      ...prevBoards,
+      { id: prevBoards.length + 1, component: <Fruits /> },
+    ])
   }
 
-  function showBoard() {}
+  function removeBoard(id) {
+    setDisplayBoards((prevBoards) =>
+      prevBoards.filter((board) => board.id !== id)
+    )
+  }
 
-  function hideBoard() {}
+  function showBoard() {
+    // Implement showBoard logic if needed
+  }
+
+  function hideBoard() {
+    // Implement hideBoard logic if needed
+  }
 
   return (
     <>
-      <button onClick={createBoard}> Create a new board</button>
+      <button onClick={createBoard}>Create a new board</button>
 
-      {[displayBoard]}
+      {displayBoards.map((board) => (
+        <div key={board.id}>
+          {board.component}
+          <button onClick={() => removeBoard(board.id)}>Remove Board</button>
+        </div>
+      ))}
     </>
   )
 }
