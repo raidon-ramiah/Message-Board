@@ -1,30 +1,30 @@
-import React, { useState } from 'react'
-import Fruits from './Messages'
+import { useState } from 'react'
+import Messages from './Messages'
 
 export function Board() {
   const [displayBoards, setDisplayBoards] = useState([
-    { id: 1, component: <Fruits /> },
+    { id: 1, component: <Messages /> },
   ])
 
   function createBoard() {
     setDisplayBoards((prevBoards) => [
       ...prevBoards,
-      { id: prevBoards.length + 1, component: <Fruits /> },
+      { id: prevBoards.length + 1, component: <Messages /> },
     ])
   }
 
-  function removeBoard(id) {
+  function removeBoard(id: number) {
     setDisplayBoards((prevBoards) =>
       prevBoards.filter((board) => board.id !== id)
     )
   }
 
   function showBoard() {
-    // Implement showBoard logic if needed
+    // Implement showBoard
   }
 
   function hideBoard() {
-    // Implement hideBoard logic if needed
+    // Implement hideBoard
   }
 
   return (

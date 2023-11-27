@@ -14,7 +14,7 @@ const emptyMessage: MessageData = {
   love: 0,
 }
 
-function AddFruitForm({ onAdd, onClose }: Props) {
+function AddMessageForm({ onAdd, onClose }: Props) {
   const [newMessage, setNewMessage] = useState(emptyMessage)
 
   const { message, love } = newMessage
@@ -36,9 +36,9 @@ function AddFruitForm({ onAdd, onClose }: Props) {
   return (
     <>
       <h2>Add new</h2>
-      <GridForm onSubmit={handleSubmit}>
-        <ColOne htmlFor="message">Message:</ColOne>
-        <ColTwoText
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="message">Message:</label>
+        <input
           type="text"
           name="message"
           id="message"
@@ -46,8 +46,8 @@ function AddFruitForm({ onAdd, onClose }: Props) {
           onChange={handleChange}
         />
 
-        <ColOne htmlFor="love">Love:</ColOne>
-        <ColTwoText
+        <label htmlFor="love">Love:</label>
+        <input
           type="number"
           name="love"
           id="love"
@@ -55,15 +55,15 @@ function AddFruitForm({ onAdd, onClose }: Props) {
           onChange={handleChange}
         />
 
-        <Button type="submit" disabled={message === '' || love === 0}>
+        <button type="submit" disabled={message === '' || love === 0}>
           Add fruit
-        </Button>
-        <Button type="button" onClick={onClose}>
+        </button>
+        <button type="button" onClick={onClose}>
           Close
-        </Button>
-      </GridForm>
+        </button>
+      </form>
     </>
   )
 }
 
-export default AddFruitForm
+export default AddMessageForm
