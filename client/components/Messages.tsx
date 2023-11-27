@@ -1,30 +1,33 @@
-import { Fruit, FruitData } from '../../models/fruit.ts'
+import { Message, MessageData } from '../../models/message.ts'
 
 import { useState } from 'react'
 import SelectedFruitForm from './SelectedFruit.tsx'
-import AddFruitForm from './AddFruit.tsx'
+import AddMessageForm from './AddMessage.tsx'
 import { ErrorMessage } from './Styled.tsx'
-import { useFruits } from '../hooks.ts'
+import { useMessage } from '../hooks.ts'
 import { useAuth0 } from '@auth0/auth0-react'
+import SelectedMessageForm from './SelectedFruit.tsx'
+import AddBoardForm from './AddBoard.tsx'
 
 type FormState =
   | {
-      selectedFruit: Fruit
+      selectedMessage: Message
       show: 'selected'
     }
   | {
-      selectedFruit: null
+      selectedMessage: null
       show: 'add' | 'none'
     }
 
-function Fruits() {
+function Messages() {
   const jwt = useAuth0().getAccessTokenSilently
+  const [board, setBoard] = useState(false)
   const [error, setError] = useState('')
   const [form, setForm] = useState<FormState>({
-    selectedFruit: null,
+    selectedMessage: null,
     show: 'none',
   })
-  const fruits = useFruits()
+  const messages = useMessage()
 
   const handleMutationSuccess = () => {
     handleCloseForm()
@@ -44,25 +47,25 @@ function Fruits() {
     onError: handleError,
   }
 
-  const handleAdd = async (fruit: FruitData) => {
+  const handleAdd = async (message: MessageData) => {
     // TODO: use getAccessTokenSilently to get an access token
     const access = await jwt()
     // TODO: pass access token to mutate function
-    fruits.add.mutate({ fruit, token: access }, mutationOptions)
+    messages.add.mutate({ message, token: access }, mutationOptions)
   }
 
-  const handleUpdate = async (fruit: Fruit) => {
+  const handleUpdate = async (message: Message) => {
     // TODO: use getAccessTokenSilently to get an access token
     const access = await jwt()
     // TODO: pass access token to mutate function
-    fruits.update.mutate({ fruit, token: access }, mutationOptions)
+    messages.update.mutate({ message, token: access }, mutationOptions)
   }
 
   const handleDeleteFruit = async (id: number) => {
     // TODO: use getAccessTokenSilently to get an access token
     const access = await jwt()
     // TODO: pass access token to mutate function
-    fruits.delete.mutate({ id, token: access }, mutationOptions)
+    messages.delete.mutate({ id, token: access }, mutationOptions)
   }
 
   const hideError = () => {
@@ -70,35 +73,37 @@ function Fruits() {
   }
 
   const handleOpenAddForm = () => {
-    setForm({ show: 'add', selectedFruit: null })
+    setForm({ show: 'add', selectedMessage: null })
   }
 
   const handleCloseForm = () => {
-    setForm({ show: 'none', selectedFruit: null })
+    setForm({ show: 'none', selectedMessage: null })
   }
 
-  const handleSelectFruit = (fruit: Fruit) => {
-    setForm({ show: 'selected', selectedFruit: fruit })
+  const handleSelectFruit = (fruit: Message) => {
+    setForm({ show: 'selected', selectedMessage: fruit })
   }
 
-  if (fruits.isLoading) {
+  if (messages.isLoading) {
     let failures = ''
-    if (fruits.failureCount > 0) {
-      failures = ` (failed ${fruits.failureCount} times)`
+    if (messages.failureCount > 0) {
+      failures = ` (failed ${messages.failureCount} times)`
     }
 
     return <div>Loading... {failures}</div>
   }
 
   let fetchStatus = ''
-  if (fruits.add.isLoading) fetchStatus = 'Adding...'
-  if (fruits.update.isLoading) fetchStatus = 'Updating...'
-  if (fruits.delete.isLoading) fetchStatus = 'Deleting...'
-  if (fruits.isRefetching) fetchStatus = 'Refreshing...'
+  if (messages.add.isLoading) fetchStatus = 'Adding...'
+  if (messages.update.isLoading) fetchStatus = 'Updating...'
+  if (messages.delete.isLoading) fetchStatus = 'Deleting...'
+  if (messages.isRefetching) fetchStatus = 'Refreshing...'
 
-  if (fruits.error instanceof Error) {
+  if (messages.error instanceof Error) {
     return (
-      <ErrorMessage>Failed to load fruits: {fruits.error.message}</ErrorMessage>
+      <ErrorMessage>
+        Failed to load messages: {messages.error.message}
+      </ErrorMessage>
     )
   }
 
@@ -109,24 +114,23 @@ function Fruits() {
       )}
       {fetchStatus !== '' && <div>{fetchStatus}</div>}
       <ul>
-        {fruits.status === 'success' &&
-          fruits.data.map((fruit) => (
-            <li key={fruit.id}>
-              <button onClick={() => handleSelectFruit(fruit)}>
-                {fruit.name}
-              </button>
+        {messages.status === 'success' &&
+          messages.data.map((message) => (
+            <li key={message.id}>
+              {message.message}
+              <button onClick={() => handleSelectFruit(message)}>⚙️</button>
             </li>
           ))}
       </ul>
       {form.show === 'add' ? (
-        <AddFruitForm onAdd={handleAdd} onClose={handleCloseForm} />
+        <AddMessageForm onAdd={handleAdd} onClose={handleCloseForm} />
       ) : (
-        <button onClick={handleOpenAddForm}>Add a Fruit</button>
+        <button onClick={handleOpenAddForm}>Add a Message</button>
       )}
       {form.show === 'selected' && (
-        <SelectedFruitForm
-          key={form.selectedFruit.id}
-          fruit={form.selectedFruit}
+        <SelectedMessageForm
+          key={form.selectedMessage.id}
+          message={form.selectedMessage}
           onUpdate={handleUpdate}
           onDelete={handleDeleteFruit}
           onClose={handleCloseForm}
@@ -136,4 +140,4 @@ function Fruits() {
   )
 }
 
-export default Fruits
+export default Messages

@@ -3,17 +3,17 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import * as API from './api.ts'
 
-export function useFruits() {
+export function useMessage() {
   const query = useQuery({
-    queryKey: ['fruits'],
-    queryFn: API.getFruits,
+    queryKey: ['messages'],
+    queryFn: API.getMessages,
   })
 
   return {
     ...query,
-    update: useUpdateFruit(),
-    delete: useDeleteFruit(),
-    add: useAddFruit(),
+    update: useUpdateMessage(),
+    delete: useDeleteMessage(),
+    add: useAddMessage(),
   }
 }
 
@@ -25,21 +25,21 @@ export function useFruitMutation<TData = unknown, TVariables = unknown>(
   const mutation = useMutation({
     mutationFn,
     onSuccess: () => {
-      queryClient.invalidateQueries(['fruits'])
+      queryClient.invalidateQueries(['messages'])
     },
   })
 
   return mutation
 }
 
-export function useUpdateFruit() {
-  return useFruitMutation(API.updateFruit)
+export function useUpdateMessage() {
+  return useFruitMutation(API.updateMessage)
 }
 
-export function useDeleteFruit() {
-  return useFruitMutation(API.deleteFruit)
+export function useDeleteMessage() {
+  return useFruitMutation(API.deleteMessage)
 }
 
-export function useAddFruit() {
-  return useFruitMutation(API.addFruit)
+export function useAddMessage() {
+  return useFruitMutation(API.addMessage)
 }

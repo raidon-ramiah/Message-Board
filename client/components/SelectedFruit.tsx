@@ -1,4 +1,4 @@
-import { Fruit } from '../../models/fruit.ts'
+import { Message } from '../../models/message.ts'
 
 import { useState } from 'react'
 
@@ -6,82 +6,82 @@ import { GridForm, ColOne, ColTwoText, Button } from './Styled.tsx'
 import { useAuth0 } from '@auth0/auth0-react'
 
 interface Props {
-  fruit: Fruit
-  onUpdate: (updatedFruit: Fruit) => void
+  message: Message
+  onUpdate: (updatedMessage: Message) => void
   onDelete: (id: number) => void
   onClose: () => void
 }
 
-function SelectedFruitForm({ fruit, onUpdate, onDelete, onClose }: Props) {
-  const [updatedFruit, setUpdatedFruit] = useState(fruit)
+function SelectedMessageForm({ message, onUpdate, onDelete, onClose }: Props) {
+  const [updatedMessage, setUpdatedMessage] = useState(message)
 
-  const { name: editingName, averageGramsEach: editingGrams } = updatedFruit
-  const { name: currentName } = fruit
+  const { message: editingName, love: editingGrams } = updatedMessage
+  const { message: currentName } = message
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
-    setUpdatedFruit({
-      ...updatedFruit,
+    setUpdatedMessage((prevMessage) => ({
+      ...prevMessage,
       [name]: value,
-    })
+    }))
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    onUpdate(updatedFruit)
+    onUpdate(updatedMessage)
   }
 
   const handleDeleteButtonClick = () => {
-    onDelete(fruit.id)
+    onDelete(message.id)
   }
 
   function IsAuthorised() {
-    return useAuth0().user?.sub === fruit.addedByUser
+    return useAuth0().user?.sub === message.addedByUser
   }
 
   return (
     <>
       <h2>Selected: {currentName}</h2>
-      <GridForm onSubmit={handleSubmit}>
-        <ColOne htmlFor="name">Name:</ColOne>
-        <ColTwoText
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="message">message:</label>
+        <input
           type="text"
-          name="name"
-          id="name"
+          name="message"
+          id="message"
           value={editingName}
           onChange={handleTextChange}
         />
 
-        <ColOne htmlFor="averageGramsEach">Average Grams Each:</ColOne>
-        <ColTwoText
+        <label htmlFor="love">Love:</label>
+        <input
           type="text"
-          name="averageGramsEach"
-          id="averageGramsEach"
+          name="love"
+          id="love"
           value={editingGrams}
           onChange={handleTextChange}
         />
 
         {IsAuthorised() ? (
           <>
-            <Button
+            <button
               type="submit"
               disabled={editingName === '' || editingGrams === 0}
             >
               Update fruit
-            </Button>
-            <Button type="button" onClick={handleDeleteButtonClick}>
+            </button>
+            <button type="button" onClick={handleDeleteButtonClick}>
               Delete fruit
-            </Button>
-            <Button type="button" onClick={onClose}>
+            </button>
+            <button type="button" onClick={onClose}>
               Close
-            </Button>
+            </button>
           </>
         ) : null}
-      </GridForm>
+      </form>
     </>
   )
 }
 
-export default SelectedFruitForm
+export default SelectedMessageForm
