@@ -12,8 +12,8 @@ interface Props {
   onClose: () => void
 }
 
-function SelectedFruitForm({ message, onUpdate, onDelete, onClose }: Props) {
-  const [updatedMessage, setUpdatedFruit] = useState(message)
+function SelectedMessageForm({ message, onUpdate, onDelete, onClose }: Props) {
+  const [updatedMessage, setUpdatedMessage] = useState(message)
 
   const { message: editingName, love: editingGrams } = updatedMessage
   const { message: currentName } = message
@@ -21,7 +21,7 @@ function SelectedFruitForm({ message, onUpdate, onDelete, onClose }: Props) {
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
-    setUpdatedFruit((prevMessage) => ({
+    setUpdatedMessage((prevMessage) => ({
       ...prevMessage,
       [name]: value,
     }))
@@ -44,9 +44,9 @@ function SelectedFruitForm({ message, onUpdate, onDelete, onClose }: Props) {
   return (
     <>
       <h2>Selected: {currentName}</h2>
-      <GridForm onSubmit={handleSubmit}>
-        <ColOne htmlFor="message">message:</ColOne>
-        <ColTwoText
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="message">message:</label>
+        <input
           type="text"
           name="message"
           id="message"
@@ -54,8 +54,8 @@ function SelectedFruitForm({ message, onUpdate, onDelete, onClose }: Props) {
           onChange={handleTextChange}
         />
 
-        <ColOne htmlFor="love">Love:</ColOne>
-        <ColTwoText
+        <label htmlFor="love">Love:</label>
+        <input
           type="text"
           name="love"
           id="love"
@@ -65,23 +65,23 @@ function SelectedFruitForm({ message, onUpdate, onDelete, onClose }: Props) {
 
         {IsAuthorised() ? (
           <>
-            <Button
+            <button
               type="submit"
               disabled={editingName === '' || editingGrams === 0}
             >
               Update fruit
-            </Button>
-            <Button type="button" onClick={handleDeleteButtonClick}>
+            </button>
+            <button type="button" onClick={handleDeleteButtonClick}>
               Delete fruit
-            </Button>
-            <Button type="button" onClick={onClose}>
+            </button>
+            <button type="button" onClick={onClose}>
               Close
-            </Button>
+            </button>
           </>
         ) : null}
-      </GridForm>
+      </form>
     </>
   )
 }
 
-export default SelectedFruitForm
+export default SelectedMessageForm
