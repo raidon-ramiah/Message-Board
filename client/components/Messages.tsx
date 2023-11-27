@@ -2,11 +2,12 @@ import { Message, MessageData } from '../../models/message.ts'
 
 import { useState } from 'react'
 import SelectedFruitForm from './SelectedFruit.tsx'
-import AddMessageForm from './AddFruit.tsx'
+import AddMessageForm from './AddMessage.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useMessage } from '../hooks.ts'
 import { useAuth0 } from '@auth0/auth0-react'
 import SelectedMessageForm from './SelectedFruit.tsx'
+import AddBoardForm from './AddBoard.tsx'
 
 type FormState =
   | {
@@ -20,6 +21,7 @@ type FormState =
 
 function Messages() {
   const jwt = useAuth0().getAccessTokenSilently
+  const [board, setBoard] = useState(false)
   const [error, setError] = useState('')
   const [form, setForm] = useState<FormState>({
     selectedMessage: null,

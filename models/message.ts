@@ -16,3 +16,16 @@ export interface MessageData {
   message: string
   love: number
 }
+
+export interface BoardData {
+  name: string
+  tag: string
+}
+
+export interface BoardData {
+  id: number
+  name: string
+  tag: string
+  addedByUser: string
+  timestamp: Date
+}
